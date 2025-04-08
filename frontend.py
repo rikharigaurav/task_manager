@@ -6,9 +6,6 @@ import pandas as pd
 from datetime import datetime
 import json
 
-# Constants
-API_URL = "http://localhost:5000/api"
-
 # Page configuration
 st.set_page_config(
     page_title="Task Manager",
@@ -18,7 +15,7 @@ st.set_page_config(
 
 # Helper functions
 def get_all_tasks():
-    response = requests.get(f"{API_URL}/tasks")
+    response = requests.get("http://localhost:5000/api/tasks")
     if response.status_code == 200:
         return response.json()
     else:
@@ -26,7 +23,7 @@ def get_all_tasks():
         return []
 
 def get_task(task_id):
-    response = requests.get(f"{API_URL}/tasks/{task_id}")
+    response = requests.get(f"http://localhost:5000/api/tasks/{task_id}")
     if response.status_code == 200:
         return response.json()
     else:
@@ -34,7 +31,7 @@ def get_task(task_id):
         return None
 
 def create_task(task_data):
-    response = requests.post(f"{API_URL}/tasks", json=task_data)
+    response = requests.post("http://localhost:5000/api/tasks", json=task_data)
     if response.status_code == 201:
         st.success("Task created successfully!")
         return response.json()
@@ -43,7 +40,7 @@ def create_task(task_data):
         return None
 
 def update_task(task_id, task_data):
-    response = requests.put(f"{API_URL}/tasks/{task_id}", json=task_data)
+    response = requests.put(f"http://localhost:5000/api/tasks/{task_id}", json=task_data)
     if response.status_code == 200:
         st.success("Task updated successfully!")
         return response.json()
@@ -52,7 +49,7 @@ def update_task(task_id, task_data):
         return None
 
 def delete_task(task_id):
-    response = requests.delete(f"{API_URL}/tasks/{task_id}")
+    response = requests.delete("http://localhost:5000/api/tasks/{task_id}")
     if response.status_code == 200:
         st.success("Task deleted successfully!")
         return True
@@ -61,7 +58,7 @@ def delete_task(task_id):
         return False
 
 def get_stats():
-    response = requests.get(f"{API_URL}/stats")
+    response = requests.get("http://localhost:5000/api/stats")
     if response.status_code == 200:
         return response.json()
     else:
