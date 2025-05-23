@@ -10,7 +10,7 @@ import time
 import signal
 from multiprocessing import Process
 
-API_URL = "http://localhost:5000/api"
+API_URL = "http://localhost:5000"
 
 class TestTaskAPI(unittest.TestCase):
     @classmethod
@@ -44,7 +44,7 @@ class TestTaskAPI(unittest.TestCase):
             "priority": 3
         }
         
-        response = requests.post(f"{API_URL}/tasks", json=task_data)
+        response = requests.post(f"{API_URL}/api/tasks", json=task_data)
         self.assertEqual(response.status_code, 201)
         
         # Verify response data
@@ -60,7 +60,7 @@ class TestTaskAPI(unittest.TestCase):
     
     def test_2_get_all_tasks(self):
         """Test retrieving all tasks"""
-        response = requests.get(f"{API_URL}/tasks")
+        response = requests.get(f"{API_URL}/api/tasks")
         self.assertEqual(response.status_code, 200)
         
         data = response.json()
@@ -69,7 +69,7 @@ class TestTaskAPI(unittest.TestCase):
     
     def test_3_get_task_by_id(self):
         """Test retrieving a single task by ID"""
-        response = requests.get(f"{API_URL}/tasks/{self.__class__.task_id}")
+        response = requests.get(f"{API_URL}/api/tasks/{self.__class__.task_id}")
         self.assertEqual(response.status_code, 200)
         
         data = response.json()
@@ -83,7 +83,7 @@ class TestTaskAPI(unittest.TestCase):
             "status": "in_progress"
         }
         
-        response = requests.put(f"{API_URL}/tasks/{self.__class__.task_id}", json=update_data)
+        response = requests.put(f"{API_URL}/api/tasks/{self.__class__.task_id}", json=update_data)
         self.assertEqual(response.status_code, 200)
         
         data = response.json()
@@ -93,7 +93,7 @@ class TestTaskAPI(unittest.TestCase):
     
     def test_5_get_stats(self):
         """Test getting task statistics"""
-        response = requests.get(f"{API_URL}/stats")
+        response = requests.get(f"{API_URL}/api/stats")
         self.assertEqual(response.status_code, 200)
         
         data = response.json()
@@ -107,16 +107,16 @@ class TestTaskAPI(unittest.TestCase):
     
     def test_6_delete_task(self):
         """Test deleting a task"""
-        response = requests.delete(f"{API_URL}/tasks/{self.__class__.task_id}")
+        response = requests.delete(f"{API_URL}/api/tasks/{self.__class__.task_id}")
         self.assertEqual(response.status_code, 200)
         
         # Verify the task is actually deleted
-        response = requests.get(f"{API_URL}/tasks/{self.__class__.task_id}")
+        response = requests.get(f"{API_URL}/api/tasks/{self.__class__.task_id}")
         self.assertEqual(response.status_code, 404)
     
     def test_7_get_nonexistent_task(self):
         """Test retrieving a non-existent task"""
-        response = requests.get(f"{API_URL}/tasks/nonexistent-id")
+        response = requests.get(f"{API_URL}/api/tasks/nonexistent-id")
         self.assertEqual(response.status_code, 404)
     
     def test_8_create_task_missing_title(self):
@@ -126,7 +126,7 @@ class TestTaskAPI(unittest.TestCase):
             "status": "pending"
         }
         
-        response = requests.post(f"{API_URL}/tasks", json=task_data)
+        response = requests.post(f"{API_URL}/api/tasks", json=task_data)
         self.assertEqual(response.status_code, 400)
 
 if __name__ == "__main__":

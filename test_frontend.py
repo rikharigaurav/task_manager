@@ -74,7 +74,7 @@ class TestStreamlitFrontend(unittest.TestCase):
             "priority": 2
         }
         
-        response = requests.post(f"{API_URL}/tasks", json=task_data)
+        response = requests.post(f"{API_URL}/api/tasks", json=task_data)
         data = response.json()
         self.task_id = data["id"]
         
@@ -87,7 +87,7 @@ class TestStreamlitFrontend(unittest.TestCase):
     def tearDown(self):
         # Clean up the test task
         try:
-            requests.delete(f"{API_URL}/tasks/{self.task_id}")
+            requests.delete(f"{API_URL}/api/tasks/{self.task_id}")
         except:
             pass
     
@@ -166,8 +166,8 @@ class TestStreamlitFrontend(unittest.TestCase):
     def test_4_dashboard_shows_stats(self):
         """Test that the dashboard shows task statistics"""
         # Create a couple more tasks for better stats
-        requests.post(f"{API_URL}/tasks", json={"title": "Dashboard Test 1", "status": "in_progress"})
-        requests.post(f"{API_URL}/tasks", json={"title": "Dashboard Test 2", "status": "completed"})
+        requests.post(f"{API_URL}/api/tasks", json={"title": "Dashboard Test 1", "status": "in_progress"})
+        requests.post(f"{API_URL}/api/tasks", json={"title": "Dashboard Test 2", "status": "completed"})
         
         # Navigate to Dashboard tab
         tabs = self.driver.find_elements(By.CSS_SELECTOR, "button[role='tab']")
